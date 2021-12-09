@@ -1,0 +1,5 @@
+jabar	jabar@gmail.com	123456	What was your first shool name?	darearqam
+amanat	amanat@gmail.com	12345	What is the name of your favourite teacher?	naeem
+asad	asad@gmail.com	12345	What is your pet name?	suzy
+arslan	arslan@gmail.com	123456	What is the name of your favourite teacher?	sir idrees
+ziafat	ziafat@gmail.com	1234	What is your pet name?	suzy

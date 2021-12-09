@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1639047240 source:c:\lib_sys\main.cpp
+	<iostream>
+	<Member.h>
+	<Librarian.h>
+
+1638871306 source:c:\lib_sys\src\member.cpp
+	"Member.h"
+
+1638877956 c:\lib_sys\include\member.h
+	<string>
+
+1639042867 c:\lib_sys\include\librarian.h
+	<string>
+
+1639047189 source:c:\lib_sys\src\librarian.cpp
+	"Librarian.h"
+	<iostream>
+	<fstream>
+	<conio.h>
+
