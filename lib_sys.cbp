@@ -34,9 +34,11 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/Book.h" />
 		<Unit filename="include/Librarian.h" />
 		<Unit filename="include/Member.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Book.cpp" />
 		<Unit filename="src/Librarian.cpp" />
 		<Unit filename="src/Member.cpp" />
 		<Extensions>

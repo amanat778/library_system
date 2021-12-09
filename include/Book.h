@@ -7,14 +7,16 @@ using namespace std;
 class Book
 {
     private:
-        double isbn;
         string title;
         string authors;
+        double isbn;
         int quantity;
 
     public:
 
         bool add_book();
+        Book* findRec(double isbn);
+        bool update(double isbn, Book d);
         Book();
         ~Book();
 
