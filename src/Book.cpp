@@ -1,6 +1,7 @@
 #include "Book.h"
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 using namespace std;
 
 Book::Book()
@@ -15,7 +16,7 @@ bool Book::add_book(){
     getline(cin, title);
 
     cout << "Enter authors: ";
-    cin >> authors;
+    getline(cin,authors);
 
     cout << "Enter isbn: ";
     cin >> isbn;
@@ -43,7 +44,9 @@ bool Book::add_book(){
 
 
     ofstream o_accounts("books.txt", ios::app);
-    o_accounts << title+"\t"+authors+"\t"+to_string(isbn)+"\t"+to_string(quantity)+"\n";
+    string s_isbn=to_string(isbn);
+    s_isbn= s_isbn.substr(0, s_isbn.find('.'));
+    o_accounts << title+"\t"+authors+"\t"+s_isbn+"\t"+to_string(quantity)+"\n";
     o_accounts.close();
 
     cout << "Your book has been added successfully." << endl;
