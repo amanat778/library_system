@@ -217,7 +217,7 @@ bool Librarian::login(){
     char choice;
     cin >> choice;
     if(choice=='y' || choice=='Y'){
-        login();
+        return login();
     }
 
     return false;

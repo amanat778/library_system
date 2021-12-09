@@ -1,6 +1,8 @@
 #include <iostream>
 #include <Member.h>
 #include <Librarian.h>
+#include <Book.h>
+
 using namespace std;
 
 Librarian l;
@@ -29,8 +31,33 @@ int main()
             break;
     }
 
-    if(success)
-        cout << "Print other menu" << endl;
+    if(!success)
+        return 0;
+    cout << endl;
+    cout << "1: Add new Books\n"
+         << "2: Add new Members\n"
+         << "3: Remove a book\n"
+         << "4: Remove a member\n"
+         << "5: Issue a book\n"
+         << "6: Deposite a book\n"
+         << "7: View members accounts\n"
+         << "8: View Stock\n"
+         << "9: List of books issued\n"
+         << "10: Search for a book\n"
+         << "11: Exit"
+         << endl;
+    cout << "Enter your choice : ";
+    cin >> choice;
+
+    switch(choice){
+        case 1:
+                Book b;
+                b.add_book();
+        break;
+
+    }
+
+
 
 
 
