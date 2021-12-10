@@ -17,6 +17,9 @@ class Book
         bool add_book();
         Book* findRec(double isbn);
         bool update(double isbn, Book d);
+        bool update_book();
+        bool search_book();
+
         Book();
         ~Book();
 

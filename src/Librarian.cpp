@@ -123,7 +123,6 @@ bool Librarian::forgot_pass(){
     cin.ignore();
     getline(cin,answer);
 
-    cout << rec->security_ans << "   " << answer << endl;
 
     if(rec->security_ans== answer){
         string p1, p2;

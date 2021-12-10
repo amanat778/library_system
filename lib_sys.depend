@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1639053827 source:c:\lib_sys\main.cpp
+1639136891 source:c:\lib_sys\main.cpp
 	<iostream>
 	<Member.h>
 	<Librarian.h>
@@ -14,17 +14,18 @@
 1639042867 c:\lib_sys\include\librarian.h
 	<string>
 
-1639053977 source:c:\lib_sys\src\librarian.cpp
+1639131669 source:c:\lib_sys\src\librarian.cpp
 	"Librarian.h"
 	<iostream>
 	<fstream>
 	<conio.h>
 
-1639053270 source:c:\lib_sys\src\book.cpp
+1639140446 source:c:\lib_sys\src\book.cpp
 	"Book.h"
 	<iostream>
 	<fstream>
+	<iomanip>
 
-1639056038 c:\lib_sys\include\book.h
+1639135702 c:\lib_sys\include\book.h
 	<string>
 

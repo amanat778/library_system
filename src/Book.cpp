@@ -4,6 +4,8 @@
 #include <iomanip>
 using namespace std;
 
+string* split_string( string str, char c);
+
 Book::Book()
 {
     //ctor
@@ -32,6 +34,7 @@ bool Book::add_book(){
             cin >> amount;
             found->quantity= found->quantity+amount;
             update(found->isbn, *found);
+            cout << "Record has been updated successfully." << endl;
             return true;
         }
 
@@ -52,6 +55,93 @@ bool Book::add_book(){
 
     cout << "Your book has been added successfully." << endl;
     return true;
+}
+
+bool Book::update_book(){
+
+    cout << endl;
+    cout << "Enter isbn: ";
+    cin >> isbn;
+
+    Book *found= findRec(isbn);
+
+    if(found==NULL){
+        cout << "No Record with this isbn number. " << endl;
+        return false;
+    }
+
+    cout << endl;
+    cin.ignore();
+    cout << "Enter new title("+found->title+"): ";
+    getline(cin, title);
+
+    cout << "Enter new authors("+found->authors+"): ";
+    getline(cin,authors);
+    string s_isbn=to_string(found->isbn);
+    s_isbn= s_isbn.substr(0,s_isbn.find('.'));
+    cout << "Enter new isbn("+s_isbn+"): ";
+    cin >> isbn;
+
+
+    if(found->isbn!=isbn && findRec(isbn)!=NULL){
+        cout << "A book record with this isbn number already exist. " << endl;
+        return false;
+    }
+
+    cout << "Enter new quantity("+to_string(found->quantity)+"):";
+    cin >> quantity;
+
+    update(found->isbn, *this);
+    cout << "Record has been updated successfully." << endl;
+    return true;
+
+
+
+}
+
+bool Book::search_book(){
+    string query;
+    cout << "Enter your term: ";
+    cin.ignore();
+    getline(cin, query);
+    query+=" ";
+
+    string* words=split_string(query, ' ');
+    int i=0;
+
+    while( words[i].find(' ')== string::npos ){
+        cout <<  words[i]  << words[i].size()<< endl;
+        ++i;
+    }
+
+    cout << "Went through that. No errors. " << endl;
+
+
+
+
+
+
+}
+
+
+string* split_string( string str, char c){
+    string temp=str;
+    int words_count=0;
+    while(temp.find(c)!=string::npos){
+        words_count++;
+        temp= temp.substr(temp.find(c)+1);
+    }
+
+    string *words= new string[words_count];
+    int i=0;
+    while(str.find(c)!=string::npos){
+        words[i]= str.substr(0, str.find(c));
+        str= str.substr(str.find(c)+1);
+        ++i;
+    }
+
+
+    return words;
 }
 
 
@@ -87,29 +177,29 @@ bool Book::update(double isbn, Book d){
     ofstream o_books("books.txt");
 
     o_books << newContent;
-
+    return true;
 }
 
 
 Book* Book::findRec(double isbn){
     Book* rec= new Book();
-    ifstream accounts;
-    accounts.open("books.txt");
+    ifstream file;
+    file.open("books.txt");
 
 
-    string account_info;
+    string line;
 
-    while(getline(accounts, account_info)){
+    while(getline(file, line)){
         char delimiter='\t';
 
 
-        rec->title= account_info.substr(0,  account_info.find(delimiter));
-        account_info= account_info.substr(account_info.find(delimiter)+1);
-        rec->authors= account_info.substr(0,  account_info.find(delimiter));
-        account_info= account_info.substr(account_info.find(delimiter)+1);
-        rec->isbn= stod(account_info.substr(0,account_info.find(delimiter)));
-        account_info= account_info.substr(account_info.find(delimiter)+1);
-        rec->quantity= stoi(account_info.substr(0,account_info.find(delimiter)));
+        rec->title= line.substr(0,  line.find(delimiter));
+        line= line.substr(line.find(delimiter)+1);
+        rec->authors= line.substr(0,  line.find(delimiter));
+        line= line.substr(line.find(delimiter)+1);
+        rec->isbn= stod(line.substr(0,line.find(delimiter)));
+        line= line.substr(line.find(delimiter)+1);
+        rec->quantity= stoi(line.substr(0,line.find(delimiter)));
 
         if(isbn==rec->isbn)
                 return rec;
