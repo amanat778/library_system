@@ -7,6 +7,7 @@ using namespace std;
 class Book
 {
     private:
+
         string title;
         string authors;
         double isbn;
@@ -26,5 +27,7 @@ class Book
 
 
 };
+
+
 
 #endif // BOOK_H

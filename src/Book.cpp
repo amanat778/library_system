@@ -5,10 +5,13 @@
 using namespace std;
 
 string* split_string( string str, char c);
+string to_lower(string str);
+
+
 
 Book::Book()
 {
-    //ctor
+
 }
 
 bool Book::add_book(){
@@ -52,7 +55,6 @@ bool Book::add_book(){
     s_isbn= s_isbn.substr(0, s_isbn.find('.'));
     o_books << title+"\t"+authors+"\t"+s_isbn+"\t"+to_string(quantity)+"\n";
     o_books.close();
-
     cout << "Your book has been added successfully." << endl;
     return true;
 }
@@ -104,15 +106,59 @@ bool Book::search_book(){
     cout << "Enter your term: ";
     cin.ignore();
     getline(cin, query);
+    query= to_lower(query);
     query+=" ";
 
+    int length=0;
     string* words=split_string(query, ' ');
-    int i=0;
 
-    while( words[i].find(' ')== string::npos ){
-        cout <<  words[i]  << words[i].size()<< endl;
-        ++i;
+    ifstream books;
+    books.open("books.txt");
+
+    string rec;
+    int arr_length=0;
+
+    while(getline(books, rec)){
+        bool first=true;
+        rec= to_lower(rec);
+        for(int i=0; i< length; i++)
+            if(rec.find(words[i])!=string::npos && first){
+                arr_length++;
+                first=false;
+            }
+
     }
+
+    cout << "Arr length " << arr_length << endl;
+
+
+    Book *records= new Book[arr_length];
+    int *relevancy= new int[arr_length];
+    int k=0;
+    while(getline(books, rec)){
+        bool first=true;
+        relevancy[k]=0;
+        rec=to_lower(rec);
+
+        for(int i=0; i< length; i++){
+            if(rec.find(words[i])!=string::npos && first){
+                string *fields=split_string(rec, '\t');
+                double isbn= stod(fields[2]);
+                records[k]= *findRec(isbn);
+                delete [] fields;
+                k++;
+            }
+
+            if(rec.find(words[i])!=string::npos)
+                relevancy[k]++;
+        }
+
+    }
+
+    for(int i=0; i<arr_length; ++i)
+        cout << records[i].title << endl;
+
+
 
     cout << "Went through that. No errors. " << endl;
 
@@ -124,20 +170,25 @@ bool Book::search_book(){
 }
 
 
+string to_lower(string str){
+    for(int i=0; i< str.size(); ++i)
+        str[i]= tolower(str[i]);
+    return str;
+}
+
 string* split_string( string str, char c){
     string temp=str;
-    int words_count=0;
+    int length=0;
     while(temp.find(c)!=string::npos){
-        words_count++;
+        length++;
         temp= temp.substr(temp.find(c)+1);
     }
 
-    string *words= new string[words_count];
-    int i=0;
-    while(str.find(c)!=string::npos){
+    string *words= new string[length];
+
+    for( int i=0;i< length; ++i){
         words[i]= str.substr(0, str.find(c));
         str= str.substr(str.find(c)+1);
-        ++i;
     }
 
 

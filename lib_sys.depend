@@ -29,3 +29,42 @@
 1639135702 c:\lib_sys\include\book.h
 	<string>
 
+1639423702 source:c:\users\nazi\downloads\library_system-main2\library_system-main2\main.cpp
+	<iostream>
+	<Member.h>
+	<Librarian.h>
+	<Book.h>
+
+1639143659 c:\users\nazi\downloads\library_system-main2\library_system-main2\include\member.h
+	<string>
+
+1639143659 c:\users\nazi\downloads\library_system-main2\library_system-main2\include\librarian.h
+	<string>
+
+1639480100 c:\users\nazi\downloads\library_system-main2\library_system-main2\include\book.h
+	<string>
+
+1639422132 source:c:\users\nazi\downloads\library_system-main2\library_system-main2\src\book.cpp
+	"Book.h"
+	<iostream>
+	<fstream>
+	<iomanip>
+
+1639423853 source:c:\users\nazi\downloads\library_system-main2\library_system-main2\src\librarian.cpp
+	"Librarian.h"
+	<iostream>
+	<fstream>
+	<conio.h>
+
+1639423865 source:c:\users\nazi\downloads\library_system-main2\library_system-main2\src\member.cpp
+	"Member.h"
+
+1639143659 source:c:\users\nazi\downloads\library_system-main2\library_system-main2\include\book.h
+	<string>
+
+1639143659 source:c:\users\nazi\downloads\library_system-main2\library_system-main2\include\librarian.h
+	<string>
+
+1639143659 source:c:\users\nazi\downloads\library_system-main2\library_system-main2\include\member.h
+	<string>
+
