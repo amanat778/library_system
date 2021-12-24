@@ -68,3 +68,53 @@
 1639143659 source:c:\users\nazi\downloads\library_system-main2\library_system-main2\include\member.h
 	<string>
 
+1640282136 source:c:\users\nazi\downloads\library_system-main\library_system-main\main.cpp
+	<iostream>
+	<Member.h>
+	<Librarian.h>
+	<Book.h>
+	<IssueHistory.h>
+
+1640266997 c:\users\nazi\downloads\library_system-main\library_system-main\include\member.h
+	<string>
+
+1640261044 c:\users\nazi\downloads\library_system-main\library_system-main\include\librarian.h
+	<string>
+
+1640266321 c:\users\nazi\downloads\library_system-main\library_system-main\include\book.h
+	<string>
+
+1640186926 source:c:\users\nazi\downloads\library_system-main\library_system-main\src\book.cpp
+	"Book.h"
+	<iostream>
+	<fstream>
+	<iomanip>
+
+1640322413 source:c:\users\nazi\downloads\library_system-main\library_system-main\src\librarian.cpp
+	"Librarian.h"
+	<Member.h>
+	<iostream>
+	<fstream>
+	<conio.h>
+	<Book.h>
+	<ctime>
+	<IssueHistory.h>
+
+1640274648 source:c:\users\nazi\downloads\library_system-main\library_system-main\src\member.cpp
+	"Member.h"
+	<iostream>
+	<fstream>
+	<iomanip>
+
+1640282041 source:c:\users\nazi\downloads\library_system-main\library_system-main\src\issuehistory.cpp
+	"IssueHistory.h"
+	<fstream>
+	<Book.h>
+	<iostream>
+	<iomanip>
+	<Librarian.h>
+	<Member.h>
+
+1640281980 c:\users\nazi\downloads\library_system-main\library_system-main\include\issuehistory.h
+	<string>
+

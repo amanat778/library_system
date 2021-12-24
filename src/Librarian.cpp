@@ -1,7 +1,11 @@
 #include "Librarian.h"
+#include <Member.h>
 #include <iostream>
 #include <fstream>
 #include <conio.h>
+#include <Book.h>
+#include <ctime>
+#include <IssueHistory.h>
 
 using namespace std;
 
@@ -107,8 +111,28 @@ string input_pass(){
 
     cout << endl;
 
-    return p.substr(0, p.size());
+    return p;
 }
+string* split_string( string str, char c, int& length){
+    string temp=str;
+    temp+=c;
+
+    while(temp.find(c)!=string::npos){
+        length++;
+        temp= temp.substr(temp.find(c)+1);
+    }
+
+    string *words= new string[length];
+
+    for( int i=0;i< length; ++i){
+        words[i]= str.substr(0, str.find(c));
+        str= str.substr(str.find(c)+1);
+    }
+
+
+    return words;
+}
+
 bool Librarian::forgot_pass(){
     cout << endl;
     string email;
@@ -163,16 +187,17 @@ bool Librarian::update(string email, Librarian d){
     while(getline(accounts, account_info)){
         char delimiter='\t';
 
-        string f_email;
-        string temp= account_info.substr(account_info.find(delimiter)+1);
-        f_email= temp.substr(0,  temp.find(delimiter));
-        account_info+="\n";
+        int l;
+        string *fields= split_string(account_info, '\t', l);
+        string f_email=fields[1];
+
+        delete [] fields;
         if(email==f_email)
-                account_info= d.username+"\t"+d.email+"\t"+d.password+"\t"+d.security_quest+"\t"+d.security_ans+"\n";
+                account_info= d.username+"\t"+d.email+"\t"+d.password+"\t"+d.security_quest+"\t"+d.security_ans;
 
 
 
-        newContent+=account_info;
+        newContent+=account_info+"\n";
 
 
     }
@@ -232,18 +257,14 @@ Librarian* Librarian::findRec(string email){
     string account_info;
 
     while(getline(accounts, account_info)){
-        char delimiter='\t';
-
-
-        rec->username= account_info.substr(0,  account_info.find(delimiter));
-        account_info= account_info.substr(account_info.find(delimiter)+1);
-        rec->email= account_info.substr(0,  account_info.find(delimiter));
-        account_info= account_info.substr(account_info.find(delimiter)+1);
-        rec->password= account_info.substr(0,account_info.find(delimiter));
-        account_info= account_info.substr(account_info.find(delimiter)+1);
-        rec->security_quest= account_info.substr(0,account_info.find(delimiter));
-        account_info= account_info.substr(account_info.find(delimiter)+1);
-        rec->security_ans= account_info.substr(0, account_info.find(delimiter));
+        int l;
+        string *fields= split_string(account_info, '\t', l);
+        rec->username= fields[0];
+        rec->email=fields[1];
+        rec->password=fields[2];
+        rec->security_quest=fields[3];
+        rec->security_ans= fields[4];
+        delete [] fields;
 
         if(email==rec->email)
                 return rec;
@@ -252,6 +273,126 @@ Librarian* Librarian::findRec(string email){
     }
     return NULL;
 
+}
+
+bool Librarian::issue_book(){
+    double isbn, CNIC;
+    cout << "Enter the ISBN number of book you want to issue: ";
+    cin >> isbn;
+    cout << "Enter the CNIC of borrower: ";
+    cin >> CNIC;
+
+
+    Book *b   = Book::findRec(isbn);
+    Member *m = Member::findRec(CNIC);
+
+    if(b==NULL){
+        char choice;
+        cout << "No book with this ISBN number. Enter again(y/n): " << endl;
+        cin >> choice;
+
+        if(choice=='y' || choice=='Y')
+            return issue_book();
+
+        return false;
+    }
+
+    if(m==NULL){
+        char choice;
+        cout << "No Member with this CNIC number. Enter again(y/n): " << endl;
+        cin >> choice;
+
+        if(choice=='y' || choice=='Y')
+            return issue_book();
+
+        return false;
+    }
+    if(m->getN()>=5){
+        cout << "This member already has five books issued." << endl;
+        return false;
+    }
+
+    b->decrement_qty();
+    m->increment_n();
+    Book::update(isbn, *b);
+    Member::update(CNIC, *m);
+
+    time_t sec;
+    time(&sec);     //filling sec variable
+    tm *time;
+
+    time=localtime(&sec);
+
+    string issue_date=to_string(time->tm_mon+1)+":";
+    issue_date+= to_string(time->tm_mday )+ ":";
+    issue_date+= to_string(time->tm_year+1900);
+
+
+    sec+= 30*24*60*60;     // adding 30 days
+    time= localtime(&sec);
+    string return_date=to_string(time->tm_mon+1)+":";
+    return_date+= to_string(time->tm_mday )+ ":";
+    return_date+= to_string(time->tm_year+1900);
+
+    IssueHistory h(email, CNIC, isbn, issue_date, return_date);
+    h.add_to_file();
+    cout << "Return date is " << return_date << endl;
+    cout << "Book has been issued successfully. " << endl;
+
+    return true;
+}
+
+
+bool Librarian::deposit_book(){
+    cout << endl;
+    int fine_per_day= 100;
+    double isbn, cnic;
+    cout << "Enter the ISBN of book: ";
+    cin >> isbn;
+
+    cout << "Enter the CNIC of borrower: ";
+    cin >> cnic;
+
+    IssueHistory h;
+    h.remove_from_file(isbn, cnic);
+    IssueHistory *rec= h.findRec(isbn, cnic);
+
+    if(rec==NULL){
+        cout << "No such book was issued. " << endl;
+        return false;
+    }
+
+
+
+    string return_d= rec->getReturnDate();
+    int l;
+    string *arr= split_string(return_d, ':',l);
+    tm return_date;
+    return_date.tm_mon= stoi(arr[0])-1;
+    return_date.tm_mday= stoi(arr[1]);
+    return_date.tm_year= stoi(arr[2])-1900;
+    return_date.tm_hour=24;
+    return_date.tm_min=0;
+    return_date.tm_sec=0;
+    delete [] arr;
+    time_t sec=mktime(&return_date);
+
+    time_t now;
+    time(&now);
+    double sec_per_day= 24*60*60;
+    float late_days=(now-sec)/sec_per_day ;
+    if(late_days<0) late_days=0;
+    cout << "Fine is : " << late_days*fine_per_day << " rupees"<< endl;
+
+    Book *b = Book::findRec(isbn);
+    Member *m = Member::findRec(cnic);
+    b->increment_qty();
+    m->decrement_n();
+    Book::update(isbn, *b);
+    Member::update(cnic, *m);
+
+    cout << "Book has been deposited successfully" << endl;
+    return true;
 }
 
 Librarian::~Librarian()

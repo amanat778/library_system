@@ -7,19 +7,37 @@ using namespace std;
 class Member
 {
     private:
-        int regNo;
+        string regNo;
         double CNIC;
         string name;
-        double cellNo;
+        int n;
+
 
     public:
-        Member(int r, double cnic, string n, double cn);
+        Member();
         double getCNIC();
+        bool add_member();
+        bool remove_member();
+        void list_all();
+        static Member* findRec(double CNIC);
+        static void update(double, Member);
+        void decrement_n(){
+            n--;
+        }
+        void increment_n(){
+            n++;
+        }
+
+        int getN(){
+            return n;
+        }
+        string getName(){
+            return name;
+        }
+
+
 
         ~Member();
-
-
-
 
 };
 

@@ -16,12 +16,25 @@ class Book
     public:
 
         bool add_book();
-        Book* findRec(double isbn);
-        bool update(double isbn, Book d);
+        static Book* findRec(double isbn);
+        static bool update(double isbn, Book d);
         bool update_book();
         bool remove_book();
         bool search_book();
         bool issue_book();
+        void view_stock();
+        void display_row();
+        string getTitle(){
+            return title;
+        }
+        void decrement_qty(){
+            --quantity;
+        }
+
+        void increment_qty(){
+            ++quantity;
+        }
+
 
         Book();
         ~Book();

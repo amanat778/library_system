@@ -16,13 +16,20 @@ class Librarian
     public:
         Librarian();
         bool login();
-        string getUsername();
         bool update(string email, Librarian d);
         static Librarian* findRec(string email);
+        bool issue_book();
+        bool deposit_book();
 
-        ~Librarian();
         bool register_user();
         bool forgot_pass();
+
+        string getUsername();
+        string getEmail(){
+            return email;
+        }
+
+        ~Librarian();
 
 
 

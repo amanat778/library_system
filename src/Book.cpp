@@ -190,27 +190,8 @@ bool Book::search_book(){
              << setw(8)  << left << "Quantity" << endl;
 
     cout << string(110,'-') << endl;
-    for(int i=0; i<arr_length; ++i){
-        int limit=33;
-        if(records[i].title.size()>limit){
-            records[i].title= records[i].title.substr(0,limit);
-            records[i].title[limit-1]='.';
-            records[i].title[limit-2]='.';
-            records[i].title[limit-3]='.';
-        }
-        limit=43;
-
-        if(records[i].authors.size()>43){
-            records[i].authors= records[i].authors.substr(0,43);
-            records[i].authors[limit-1]='.';
-            records[i].authors[limit-2]='.';
-            records[i].authors[limit-3]='.';
-        }
-        cout << setw(35)<< left << records[i].title
-             << setw(45)<< left << records[i].authors
-             << setw(20)<< left << fixed << setprecision(0)<< records[i].isbn
-             << setw(8) << left << records[i].quantity << endl;
-    }
+    for(int i=0; i<arr_length; ++i)
+        records[i].display_row();
 
     if(arr_length==0)
         cout << "Sorry no records found with this keyword. "<< endl;
@@ -242,25 +223,7 @@ string to_lower(string str){
     return str;
 }
 
-string* split_string( string str, char c, int& length){
-    string temp=str;
-    temp+=c;
 
-    while(temp.find(c)!=string::npos){
-        length++;
-        temp= temp.substr(temp.find(c)+1);
-    }
-
-    string *words= new string[length];
-
-    for( int i=0;i< length; ++i){
-        words[i]= str.substr(0, str.find(c));
-        str= str.substr(str.find(c)+1);
-    }
-
-
-    return words;
-}
 
 
 bool Book::update(double isbn, Book d){
@@ -329,6 +292,17 @@ Book* Book::findRec(double isbn){
 bool Book::remove_book(){
    cout << "Enter the ISBN number of book you want to remove: ";
    cin >>isbn;
+
+
+   if(findRec(isbn)==NULL){
+        char choice;
+        cout << "No record with this ISBN. Try again(y/n): ";
+        cin >> choice;
+
+        if(choice=='y'|| choice=='Y')
+            return remove_book();
+        return false;
+   }
    ifstream file("books.txt");
    string newContent;
    string line;
@@ -377,9 +351,54 @@ bool Book::issue_book(){
     cin >> return_date;
 
 
+}
 
 
+void Book::display_row(){
+    int limit=33;
+    if(title.size()>limit){
+        title= title.substr(0,limit);
+        title[limit-1]='.';
+        title[limit-2]='.';
+        title[limit-3]='.';
+    }
+    limit=43;
 
+    if(authors.size()>43){
+        authors= authors.substr(0,43);
+        authors[limit-1]='.';
+        authors[limit-2]='.';
+        authors[limit-3]='.';
+    }
+    cout << setw(35)<< left << title
+         << setw(45)<< left << authors
+         << setw(20)<< left << fixed << setprecision(0)<< isbn
+         << setw(8) << left << quantity << endl;
+
+}
+
+
+void Book::view_stock(){
+    cout << endl;
+    cout << setw(35) << left << "Title"
+         << setw(45) << left << "Authors"
+         << setw(20) << left << "ISBN"
+         << setw(8)  << left << "Quantity" << endl;
+
+    cout << string(110,'-') << endl;
+
+    ifstream file("books.txt");
+    string line;
+
+
+    while(getline(file, line)){
+        int l;
+        string *fields= split_string(line, '\t', l);
+        double isbn= stod(fields[2]);
+        findRec(isbn)->display_row();
+
+
+    }
 
 }
 
